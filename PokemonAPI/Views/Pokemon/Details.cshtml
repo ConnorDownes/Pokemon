@@ -5,26 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div style="position: relative; z-index: 1;">
-        @using (Html.BeginForm("Search", "Pokemon", FormMethod.Get, new { @class = "form-inline" }))
-        {
-            <div class="input-group">
-                @Html.TextBoxFor(m => Model.name, null, new { @class = "form-control blue-border", placeholder = "Search Pokemon" })
-                <div class="input-group-append">
-                    <input id="searchName" type="submit" value="Search" class="btn my-2 my-sm-0 btn-blue" />
-                </div>
-            </div>
-        }
-        @Html.ValidationMessageFor(model => model.name, "", new { @class = "ErrorBox", style = "padding: 5px 10px;" })
-    </div>
-
 @if (Model != null)
 {
-    <h2 style="padding: 5px; background-color: #f1f0cc; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom">
-        <div class="container">
+<div style="padding: 5px; background-color: #f1f0cc; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom">
+    <div class="container">
+        <h2>
             @Model.Root.name.First().ToString().ToUpper()@Model.Root.name.Substring(1)
-        </div>
-    </h2>
+        </h2>
+    </div>
+</div>
     <div style="background-color: #f1f0cc; text-align: center; padding: 15px;">
         <div class="container">
             @foreach (var item in Model.PokemonEvolutionChain)

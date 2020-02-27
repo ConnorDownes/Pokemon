@@ -16,16 +16,9 @@ namespace PokemonAPI
             routes.MapMvcAttributeRoutes();
 
             routes.MapRoute(
-                name: "Pokemon Search",
-                url: "{controller}/{action}/{name}",
-                defaults: new { name = UrlParameter.Optional }
-
-                );
-
-            routes.MapRoute(
                 name: "Default",
                 url: "{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Pokemon", action = "Index", id = UrlParameter.Optional }
             );
 
 
