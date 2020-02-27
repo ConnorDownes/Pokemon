@@ -1,0 +1,98 @@
+﻿@model PokemonAPI.ViewModels.PokemonDetails
+
+@{
+    ViewBag.Title = "Pokemon Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div style="position: relative; z-index: 1;">
+        @using (Html.BeginForm("Search", "Pokemon", FormMethod.Get, new { @class = "form-inline" }))
+        {
+            <div class="input-group">
+                @Html.TextBoxFor(m => Model.name, null, new { @class = "form-control blue-border", placeholder = "Search Pokemon" })
+                <div class="input-group-append">
+                    <input id="searchName" type="submit" value="Search" class="btn my-2 my-sm-0 btn-blue" />
+                </div>
+            </div>
+        }
+        @Html.ValidationMessageFor(model => model.name, "", new { @class = "ErrorBox", style = "padding: 5px 10px;" })
+    </div>
+
+@if (Model != null)
+{
+    <h2 style="padding: 5px; background-color: #f1f0cc; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom">
+        <div class="container">
+            @Model.Root.name.First().ToString().ToUpper()@Model.Root.name.Substring(1)
+        </div>
+    </h2>
+    <div style="background-color: #f1f0cc; text-align: center; padding: 15px;">
+        <div class="container">
+            @foreach (var item in Model.PokemonEvolutionChain)
+            {
+                <a href="@Url.Action(null, new { name = item.name })" class="i-text @(item.name.ToUpper() == Model.Root.name.ToUpper() ? "noclick" : "")">
+                    <div class="d-iblock br-3 p-10 @(item.name.ToUpper() == Model.Root.name.ToUpper() ? "white-text red-bg black-border noclick" : "black-text hover grey-bg")" style="padding: 0px 5px;">
+                        <img src="@item.sprites.front_default" width="90" height="90" />
+                        <span class="d-block">@item.species.name</span>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="text-center">
+        <div class="container">
+            <table class="table table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Hidden</th>
+                    </tr>
+                </thead>
+                @foreach (var ability in Model.Root.abilities)
+                {
+                    <tbody>
+                        <tr>
+                            <td>
+                                @ability.ability.name
+                            </td>
+                            <td>
+                                @ability.is_hidden
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="container">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th colspan="2">
+                        Abilities
+                    </th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Hidden</th>
+                </tr>
+            </thead>
+            @foreach (var ability in Model.Root.abilities)
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            @ability.ability.name
+                        </td>
+                        <td>
+                            @ability.is_hidden
+                        </td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+
+}
+

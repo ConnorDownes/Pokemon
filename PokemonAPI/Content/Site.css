@@ -1,0 +1,186 @@
+﻿html, body {
+    overflow-x: hidden;
+}
+
+#PageContainer {
+    min-height: 100vh;
+}
+
+#footerPlaceholder {
+    height: 60px;
+}
+
+.noclick {
+    pointer-events: none;
+}
+
+.boxShadowBottom {
+    -webkit-box-shadow: 0px 1px 5px 2px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 1px 5px 2px rgba(0,0,0,0.5);
+    box-shadow: 0px 1px 5px 2px rgba(0,0,0,0.5);
+}
+
+#footerContainer {
+    background-color: #2b73b9;
+    text-align: center;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: -60px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+#BannerContainer {
+    width: 100%;
+    height: 15vh;
+    position: relative;
+    background-image: url("/Images/PokemonBanner.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-bottom: 3px;
+    margin: 0px;
+}
+
+#BannerContainer .navbar {
+    position: absolute;
+    bottom: 0px;
+}
+
+.white-bg {
+    background-color: white;
+}
+
+.red-bg {
+    background-color: crimson;
+}
+
+.white-border {
+    border-color: white;
+}
+
+.navbar {
+    border: 0px;
+}
+
+z-1000 {
+    z-index: 1000;
+}
+
+.d-initial {
+    display: initial;
+}
+
+.d-block {
+    display: block;
+}
+
+.d-iblock {
+    display: inline-block;
+}
+
+.ErrorBox {
+    background-color: #f83138;
+    color: white;
+    display: block;
+    width: 100%;
+}
+
+.ErrorBox:empty {
+    padding: 0px;
+    display: none;
+}
+
+.blue-border {
+    border-color: #337ab7;
+}
+
+.black-border {
+    border-color: #337ab7;
+}
+
+.br-3 {
+    border-radius: 3px;
+}
+
+.btn-blue {
+    background-color: #337ab7;
+}
+
+.noMargin {
+    margin: 0;
+}
+
+.noMarginBottom {
+    margin-bottom: 0px !important;
+}
+
+.p-10 {
+    padding: 10px !important;
+}
+
+.hover {
+    cursor: pointer;
+}
+
+.hover.grey-bg:hover {
+    background-color: #CCC;
+}
+
+.white-text {
+    color: white !important;
+}
+
+.black-text {
+    color: black !important;
+}
+
+a.i-text {
+    color: inherit;
+}
+
+a.i-text:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    #BannerContainer {
+        height: auto;
+    }
+
+    #BannerContainer .navbar {
+        position: relative !important;
+    }
+
+    .navbar-collapse {
+        position: absolute;
+        background-color: black;
+        width: 100%;
+        margin-top: 1px;
+    }
+
+    .navbar {
+        margin-bottom: 3px;
+    }
+}
