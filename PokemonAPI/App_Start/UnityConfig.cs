@@ -1,5 +1,7 @@
 using PokemonAPI.Factories;
 using PokemonAPI.Factories.Interfaces;
+using PokemonAPI.Repositories;
+using PokemonAPI.Repositories.Interfaces;
 using PokemonAPI.Services;
 using PokemonAPI.Services.Interfaces;
 using System;
@@ -48,6 +50,7 @@ namespace PokemonAPI
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IFactory, DeserialiserFactory>();
             container.RegisterType<IApiService, HTTPClientService>();
+            container.RegisterType<IPokeApiRepository, PokeApiRepository>();
 
         }
     }

@@ -212,6 +212,9 @@
     <Compile Include="Models\PokemonSpecifics\VersionGroup.cs" />
     <Compile Include="Models\PokemonSpecifics\VersionGroupDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\Interfaces\IPokeApiRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IRepository.cs" />
+    <Compile Include="Repositories\PokeApiRepository.cs" />
     <Compile Include="Services\HTTPClientService.cs" />
     <Compile Include="Services\Interfaces\IApiService.cs" />
     <Compile Include="Services\Interfaces\IDeserialise.cs" />

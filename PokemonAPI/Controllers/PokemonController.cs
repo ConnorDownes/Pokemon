@@ -4,6 +4,7 @@ using PokemonAPI.Factories.Interfaces;
 using PokemonAPI.Models;
 using PokemonAPI.Models.PokemonBasic;
 using PokemonAPI.Models.PokemonEvolution;
+using PokemonAPI.Repositories.Interfaces;
 using PokemonAPI.Services;
 using PokemonAPI.Services.Interfaces;
 using PokemonAPI.ViewModels;
@@ -23,12 +24,13 @@ namespace PokemonAPI.Controllers
     {
         private readonly IApiService _apiClient;
         private readonly IDeserialise _deserialiser;
-        private static readonly HttpClient client = new HttpClient();
+        private readonly IPokeApiRepository _PokeApiRepo;
 
-        public PokemonController(HTTPClientService apiClient, DeserialiserFactory deserialiserFactory)
+        public PokemonController(HTTPClientService apiClient, DeserialiserFactory deserialiserFactory, IPokeApiRepository PokeApiRepo)
         {
             _apiClient = apiClient;
             _deserialiser = deserialiserFactory.Create(Enums.ApiResponseFormat.JSON);
+            _PokeApiRepo = PokeApiRepo;
         }
 
         [HttpGet]
@@ -44,15 +46,17 @@ namespace PokemonAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult> Details(string name)
         {
-            var JsonResponse = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon-species/{name.ToLower()}");
+            //var JsonResponse = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon-species/{name.ToLower()}");
 
-            if (JsonResponse == null)
-            {
-                ModelState.AddModelError("name", $"No Pokemon named '{name}' was found!");
-                return View();
-            }
+            //if (JsonResponse == null)
+            //{
+            //    ModelState.AddModelError("name", $"No Pokemon named '{name}' was found!");
+            //    return View();
+            //}
 
-            pokemonSpecies Species = _deserialiser.Deserialise<pokemonSpecies>(JsonResponse);
+            //pokemonSpecies Species = _deserialiser.Deserialise<pokemonSpecies>(JsonResponse);
+
+            var Species = await _PokeApiRepo.GetByNameAsync<pokemonSpecies>(name);
 
             if (Species == null)
             {
@@ -67,7 +71,7 @@ namespace PokemonAPI.Controllers
             //CallAPI<evolutionInfo>(Species.evolution_chain.url);
             var GetDetailedInformationForPokemon = _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon/{Species.id}");
             //CallAPI<RootObject>("https://pokeapi.co/api/v2/pokemon/" + Species.id);
-            var GroupedTasks = Task.WhenAll(GetEvolutionChainFromApi, GetDetailedInformationForPokemon);
+            Task.WhenAll(GetEvolutionChainFromApi, GetDetailedInformationForPokemon);
             var EvolutionInfo = _deserialiser.Deserialise<evolutionInfo>(await GetEvolutionChainFromApi);
             var PokemonInfo = _deserialiser.Deserialise<RootObject>(await GetDetailedInformationForPokemon);
             var imageList = await GetEvolutionChain(new List<Chain>() { EvolutionInfo.chain });
