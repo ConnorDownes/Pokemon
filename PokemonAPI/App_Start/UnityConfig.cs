@@ -51,7 +51,7 @@ namespace PokemonAPI
             container.RegisterType<IFactory, DeserialiserFactory>();
             container.RegisterType<IApiService, HTTPClientService>();
             container.RegisterType<IPokeApiRepository, PokeApiRepository>();
-
+            container.RegisterType<IPokeApiService, PokeApiService>();
         }
     }
 }

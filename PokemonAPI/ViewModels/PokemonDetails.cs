@@ -11,7 +11,7 @@ namespace PokemonAPI.ViewModels
     {
         public string name { get; set; }
         public RootObject Root { get; set; }
-        public evolutionInfo Evolve { get; set; }
+        public EvolutionInfo Evolve { get; set; }
         public pokemonSpecies Species { get; set; }
         public List<RootObject> PokemonEvolutionChain { get; set; }
     }

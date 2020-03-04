@@ -165,7 +165,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\evolutionInfo.cs" />
+    <Compile Include="Models\EvolutionInfo.cs" />
     <Compile Include="Models\PokemonBasic\PokemonBasic.cs" />
     <Compile Include="Models\PokemonBasic\Result.cs" />
     <Compile Include="Models\PokemonEvolution\Chain.cs" />
@@ -218,8 +218,9 @@
     <Compile Include="Services\HTTPClientService.cs" />
     <Compile Include="Services\Interfaces\IApiService.cs" />
     <Compile Include="Services\Interfaces\IDeserialise.cs" />
+    <Compile Include="Services\Interfaces\IPokeApiService.cs" />
     <Compile Include="Services\JsonDeserialise.cs" />
-    <Compile Include="Services\PokemonService.cs" />
+    <Compile Include="Services\PokeApiService.cs" />
     <Compile Include="ViewModels\PokemonDetails.cs" />
   </ItemGroup>
   <ItemGroup>

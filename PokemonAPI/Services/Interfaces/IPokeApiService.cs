@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokemonAPI.Repositories.Interfaces
+namespace PokemonAPI.Services.Interfaces
 {
-    public interface IPokeApiRepository
+    public interface IPokeApiService
     {
         Task<PokemonBasic> GetAllPokemonAsync(int limit = 20, int offset = 5);
         Task<pokemonSpecies> GetPokemonByNameAsync(string name);

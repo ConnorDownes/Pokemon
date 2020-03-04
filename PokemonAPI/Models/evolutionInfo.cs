@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PokemonAPI.Models
 {
-    public class evolutionInfo
+    public class EvolutionInfo
     {
         public object baby_trigger_item { get; set; }
         public Chain chain { get; set; }
