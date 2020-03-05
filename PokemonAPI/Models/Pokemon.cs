@@ -5,7 +5,7 @@ using System.Web;
 
 namespace PokemonAPI.Models
 {
-    public class RootObject
+    public class Pokemon
     {
         public List<Ability> abilities { get; set; }
         public int base_experience { get; set; }

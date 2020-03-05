@@ -11,7 +11,10 @@ namespace PokemonAPI.Repositories.Interfaces
     public interface IPokeApiRepository
     {
         Task<PokemonBasic> GetAllPokemonAsync(int limit = 20, int offset = 5);
-        Task<pokemonSpecies> GetPokemonByNameAsync(string name);
-        Task<pokemonSpecies> GetPokemonByIdAsync(int id);
+        Task<Pokemon> GetSinglePokemonAsync(int id);
+        Task<Pokemon> GetSinglePokemonAsync(string name);
+        Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(string name);
+        Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(int id);
+        Task<EvolutionInfo> GetPokemonEvolutionInfoAsync(string evolutionURL);
     }
 }

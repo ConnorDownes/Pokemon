@@ -24,19 +24,19 @@ namespace PokemonAPI.Controllers
     {
         private readonly IApiService _apiClient;
         private readonly IDeserialise _deserialiser;
-        private readonly IPokeApiService _pokeApiService;
+        private readonly IPokeApiRepository _pokeApiRepo;
 
-        public PokemonController(HTTPClientService apiClient, IFactory deserialiserFactory, IPokeApiService pokeApiService)
+        public PokemonController(HTTPClientService apiClient, IFactory deserialiserFactory, IPokeApiRepository pokeApiRepo)
         {
             _apiClient = apiClient;
             _deserialiser = deserialiserFactory.Create(Enums.ApiResponseFormat.JSON);
-            _pokeApiService = pokeApiService;
+            _pokeApiRepo = pokeApiRepo;
         }
 
         [HttpGet]
         public async Task<ActionResult> Index(int page = 1, int limit = 20)
         {
-            var Response = await _pokeApiService.GetAllPokemonAsync();
+            var Response = await _pokeApiRepo.GetAllPokemonAsync();
             return View(Response);
         }
 
@@ -45,7 +45,7 @@ namespace PokemonAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult> Details(string name)
         {
-            var Species = await _pokeApiService.GetPokemonByNameAsync(name);
+            var Species = await _pokeApiRepo.GetSinglePokemonSpeciesAsync(name);
 
             if (Species == null)
             {
@@ -53,14 +53,12 @@ namespace PokemonAPI.Controllers
                 return View();
             }
 
-            // TODO: Refactor by moving into a service
-            // Consider having a repository for basic operations, to hide the API calls
-
-            var GetEvolutionChainFromApi = _apiClient.CallApiAsync(Species.evolution_chain.url);
-            var GetDetailedInformationForPokemon = _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon/{Species.id}");
-            await Task.WhenAll(GetEvolutionChainFromApi, GetDetailedInformationForPokemon);
-            var EvolutionInfo = _deserialiser.Deserialise<EvolutionInfo>(await GetEvolutionChainFromApi);
-            var PokemonInfo = _deserialiser.Deserialise<RootObject>(await GetDetailedInformationForPokemon);
+            var EvolutionInfoTask =  _pokeApiRepo.GetPokemonEvolutionInfoAsync(Species.evolution_chain.url);
+            var PokemonInfoTask = _pokeApiRepo.GetSinglePokemonAsync(Species.id);
+            await Task.WhenAll(EvolutionInfoTask, PokemonInfoTask);
+            var EvolutionInfo = EvolutionInfoTask.Result;
+            var PokemonInfo = PokemonInfoTask.Result;
+            // move this method into the repository to allow it to be re-used
             var imageList = await GetEvolutionChain(new List<Chain>() { EvolutionInfo.chain });
 
             return View(new PokemonDetails
@@ -74,15 +72,15 @@ namespace PokemonAPI.Controllers
         }
 
         // Get the evolution chain from an initial Chain class
-        private async Task<List<RootObject>> GetEvolutionChain(List<Chain> evolChain)
+        private async Task<List<Pokemon>> GetEvolutionChain(List<Chain> evolChain)
         {
             // List to contain the objects
-            var PokemonList = new List<RootObject>();
+            var PokemonList = new List<Pokemon>();
             // For each object in evolution chain, get the object from the API and add it to the list
             foreach(var PokeEvolution in evolChain)
             {
-                var CurrentPokemonResponse = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon/{PokeEvolution.species.name}");
-                PokemonList.Add(_deserialiser.Deserialise<RootObject>(CurrentPokemonResponse));
+                var CurrentPokemonResponse = await _pokeApiRepo.GetSinglePokemonAsync(PokeEvolution.species.name);
+                PokemonList.Add(CurrentPokemonResponse);
             }
             // Reloop through chain after all pokemon have been found above
             // TODO: Look into a better way of doing this to avoid looping twice

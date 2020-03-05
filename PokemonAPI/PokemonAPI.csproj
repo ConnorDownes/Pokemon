@@ -202,7 +202,7 @@
     <Compile Include="Models\PokemonSpecifics\Move.cs" />
     <Compile Include="Models\PokemonSpecifics\Move2.cs" />
     <Compile Include="Models\PokemonSpecifics\MoveLearnMethod.cs" />
-    <Compile Include="Models\RootObject.cs" />
+    <Compile Include="Models\Pokemon.cs" />
     <Compile Include="Models\PokemonSpecifics\Species.cs" />
     <Compile Include="Models\PokemonSpecifics\Sprites.cs" />
     <Compile Include="Models\PokemonSpecifics\Stat.cs" />
@@ -218,9 +218,7 @@
     <Compile Include="Services\HTTPClientService.cs" />
     <Compile Include="Services\Interfaces\IApiService.cs" />
     <Compile Include="Services\Interfaces\IDeserialise.cs" />
-    <Compile Include="Services\Interfaces\IPokeApiService.cs" />
     <Compile Include="Services\JsonDeserialise.cs" />
-    <Compile Include="Services\PokeApiService.cs" />
     <Compile Include="ViewModels\PokemonDetails.cs" />
   </ItemGroup>
   <ItemGroup>

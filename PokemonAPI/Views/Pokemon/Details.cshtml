@@ -28,32 +28,6 @@
         </div>
     </div>
 
-    <div class="text-center">
-        <div class="container">
-            <table class="table table-sm">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Name</th>
-                        <th>Hidden</th>
-                    </tr>
-                </thead>
-                @foreach (var ability in Model.Root.abilities)
-                {
-                    <tbody>
-                        <tr>
-                            <td>
-                                @ability.ability.name
-                            </td>
-                            <td>
-                                @ability.is_hidden
-                            </td>
-                        </tr>
-                    </tbody>
-                }
-            </table>
-        </div>
-    </div>
-
     <div class="container">
         <table class="table">
             <thead class="thead-dark">

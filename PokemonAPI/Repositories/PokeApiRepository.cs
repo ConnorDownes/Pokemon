@@ -1,4 +1,5 @@
 ﻿using PokemonAPI.Factories;
+using PokemonAPI.Factories.Interfaces;
 using PokemonAPI.Models;
 using PokemonAPI.Models.PokemonBasic;
 using PokemonAPI.Repositories.Interfaces;
@@ -16,7 +17,7 @@ namespace PokemonAPI.Repositories
     {
         private readonly IApiService _apiClient;
         private readonly IDeserialise _deserialiser;
-        public PokeApiRepository(HTTPClientService apiClient, DeserialiserFactory deserialiserFactory)
+        public PokeApiRepository(IApiService apiClient, IFactory deserialiserFactory)
         {
             _apiClient = apiClient;
             _deserialiser = deserialiserFactory.Create(Enums.ApiResponseFormat.JSON);
@@ -31,7 +32,25 @@ namespace PokemonAPI.Repositories
             return Pokemon;
         }
 
-        public async Task<pokemonSpecies> GetPokemonByIdAsync(int id)
+        public async Task<Pokemon> GetSinglePokemonAsync(int id)
+        {
+            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon/{id}");
+
+            var Pokemon = _deserialiser.Deserialise<Pokemon>(Response);
+
+            return Pokemon;
+        }
+
+        public async Task<Pokemon> GetSinglePokemonAsync(string name)
+        {
+            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon/{name}");
+
+            var Pokemon = _deserialiser.Deserialise<Pokemon>(Response);
+
+            return Pokemon;
+        }
+
+        public async Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(int id)
         {
             var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon-species/{id}");
 
@@ -40,13 +59,22 @@ namespace PokemonAPI.Repositories
             return Species;
         }
 
-        public async Task<pokemonSpecies> GetPokemonByNameAsync(string name)
+        public async Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(string name)
         {
-            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon-species/{name.ToLower()}");
+            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon-species/{name}");
 
             var Species = _deserialiser.Deserialise<pokemonSpecies>(Response);
 
             return Species;
+        }
+
+        public async Task<EvolutionInfo> GetPokemonEvolutionInfoAsync(string evolutionURL)
+        {
+            var Response = await _apiClient.CallApiAsync(evolutionURL);
+
+            var Evolution = _deserialiser.Deserialise<EvolutionInfo>(Response);
+
+            return Evolution;
         }
     }
 }
