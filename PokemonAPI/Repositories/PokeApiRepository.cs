@@ -23,7 +23,7 @@ namespace PokemonAPI.Repositories
             _deserialiser = deserialiserFactory.Create(Enums.ApiResponseFormat.JSON);
         }
 
-        public async Task<PokemonBasic> GetAllPokemonAsync(int limit = 20, int offset = 5)
+        public async Task<PokemonBasic> GetAllPokemonAsync(int limit = 20, int offset = 0)
         {
             var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}");
 

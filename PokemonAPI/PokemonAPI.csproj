@@ -165,6 +165,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EvolutionHelper.cs" />
     <Compile Include="Models\EvolutionInfo.cs" />
     <Compile Include="Models\PokemonBasic\PokemonBasic.cs" />
     <Compile Include="Models\PokemonBasic\Result.cs" />

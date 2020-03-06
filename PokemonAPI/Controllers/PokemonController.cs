@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PokemonAPI.Factories;
 using PokemonAPI.Factories.Interfaces;
+using PokemonAPI.Helpers;
 using PokemonAPI.Models;
 using PokemonAPI.Models.PokemonBasic;
 using PokemonAPI.Models.PokemonEvolution;
@@ -36,7 +37,7 @@ namespace PokemonAPI.Controllers
         [HttpGet]
         public async Task<ActionResult> Index(int page = 1, int limit = 20)
         {
-            var Response = await _pokeApiRepo.GetAllPokemonAsync();
+            var Response = await _pokeApiRepo.GetAllPokemonAsync(limit, (page - 1) * limit);
             return View(Response);
         }
 
@@ -49,16 +50,16 @@ namespace PokemonAPI.Controllers
 
             if (Species == null)
             {
-                ModelState.AddModelError("name", $"No Pokemon named '{name}' was found!");
-                return View();
+                throw new Exception($"No Pokemon named '{name}' was found!");
             }
-
+            // TODO: Refactor to call DB repo, if item is not found, call it from the API
             var EvolutionInfoTask =  _pokeApiRepo.GetPokemonEvolutionInfoAsync(Species.evolution_chain.url);
             var PokemonInfoTask = _pokeApiRepo.GetSinglePokemonAsync(Species.id);
             await Task.WhenAll(EvolutionInfoTask, PokemonInfoTask);
             var EvolutionInfo = EvolutionInfoTask.Result;
             var PokemonInfo = PokemonInfoTask.Result;
             // move this method into the repository to allow it to be re-used
+            // Add a service and put this in there
             var imageList = await GetEvolutionChain(new List<Chain>() { EvolutionInfo.chain });
 
             return View(new PokemonDetails
@@ -69,34 +70,6 @@ namespace PokemonAPI.Controllers
                 Species = Species,
                 PokemonEvolutionChain = imageList
             });
-        }
-
-        // Get the evolution chain from an initial Chain class
-        private async Task<List<Pokemon>> GetEvolutionChain(List<Chain> evolChain)
-        {
-            // List to contain the objects
-            var PokemonList = new List<Pokemon>();
-            // For each object in evolution chain, get the object from the API and add it to the list
-            foreach(var PokeEvolution in evolChain)
-            {
-                var CurrentPokemonResponse = await _pokeApiRepo.GetSinglePokemonAsync(PokeEvolution.species.name);
-                PokemonList.Add(CurrentPokemonResponse);
-            }
-            // Reloop through chain after all pokemon have been found above
-            // TODO: Look into a better way of doing this to avoid looping twice
-            foreach (var PokeEvolution in evolChain)
-            {
-                // If the current pokemon has an evolution, recursively run this function again to get the 
-                // pokemon in the next chain
-                if (PokeEvolution.evolves_to != null)
-                {
-                    // Add the returned pokemon to the list
-                    PokemonList.AddRange(await GetEvolutionChain(PokeEvolution.evolves_to));
-                }
-            }
-            // return the list of pokemon in the evolution chain
-            return PokemonList;
-
         }
     }
 }
