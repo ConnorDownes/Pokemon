@@ -1,9 +1,7 @@
-﻿using PokemonAPI.Models;
-using System;
+﻿using PokemonAPI.Models.PokeAPI.PokemonEvolution;
+using PokemonAPI.Models.PokeAPI.PokemonSpecies;
+using PokemonAPI.Models.PokeAPI.PokemonSpecifics;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace PokemonAPI.ViewModels
 {

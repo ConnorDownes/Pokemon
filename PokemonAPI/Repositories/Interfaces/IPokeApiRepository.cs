@@ -1,9 +1,8 @@
-﻿using PokemonAPI.Models;
+﻿using PokemonAPI.Models.PokeAPI.PokemonEvolution;
+using PokemonAPI.Models.PokeAPI.PokemonSpecies;
+using PokemonAPI.Models.PokeAPI.PokemonSpecifics;
 using PokemonAPI.Models.PokemonBasic;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PokemonAPI.Repositories.Interfaces
@@ -16,5 +15,6 @@ namespace PokemonAPI.Repositories.Interfaces
         Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(string name);
         Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(int id);
         Task<EvolutionInfo> GetPokemonEvolutionInfoAsync(string evolutionURL);
+        Task<List<Pokemon>> GetEvolutionChain(List<Chain> evolChain);
     }
 }

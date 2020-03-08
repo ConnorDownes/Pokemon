@@ -1,20 +1,11 @@
-﻿using Newtonsoft.Json;
-using PokemonAPI.Factories;
-using PokemonAPI.Factories.Interfaces;
-using PokemonAPI.Helpers;
-using PokemonAPI.Models;
-using PokemonAPI.Models.PokemonBasic;
-using PokemonAPI.Models.PokemonEvolution;
+﻿using PokemonAPI.Factories.Interfaces;
+using PokemonAPI.Models.PokeAPI.PokemonEvolution;
 using PokemonAPI.Repositories.Interfaces;
 using PokemonAPI.Services;
 using PokemonAPI.Services.Interfaces;
 using PokemonAPI.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Cache;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -23,14 +14,10 @@ namespace PokemonAPI.Controllers
     [RoutePrefix("Pokemon")]
     public class PokemonController : Controller
     {
-        private readonly IApiService _apiClient;
-        private readonly IDeserialise _deserialiser;
         private readonly IPokeApiRepository _pokeApiRepo;
 
-        public PokemonController(HTTPClientService apiClient, IFactory deserialiserFactory, IPokeApiRepository pokeApiRepo)
+        public PokemonController(IPokeApiRepository pokeApiRepo)
         {
-            _apiClient = apiClient;
-            _deserialiser = deserialiserFactory.Create(Enums.ApiResponseFormat.JSON);
             _pokeApiRepo = pokeApiRepo;
         }
 
@@ -60,7 +47,7 @@ namespace PokemonAPI.Controllers
             var PokemonInfo = PokemonInfoTask.Result;
             // move this method into the repository to allow it to be re-used
             // Add a service and put this in there
-            var imageList = await GetEvolutionChain(new List<Chain>() { EvolutionInfo.chain });
+            var imageList = await _pokeApiRepo.GetEvolutionChain(new List<Chain>() { EvolutionInfo.chain });
 
             return View(new PokemonDetails
             {

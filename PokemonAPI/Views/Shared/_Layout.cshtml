@@ -8,24 +8,47 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    
     <div id="PageContainer">
-
-        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 1;">
-            <a class="navbar-brand" href="/">
-                <img src='@Url.Content("~/Images/PokemonLogo.png")' height="40" style="padding: 5px 20px 0px 10px;" />
-            </a>
-        </nav>
-
-        <div id="bodyContainer">
-            @RenderBody()
+        <div id="SideMenuContainer">
+            <div class="SideMenuTopBlock">
+                <h3>MENU</h3>
+            </div>
+            <div class="SideMenuBlock">
+                Home
+            </div>
+            <div class="SideMenuBlock">
+                Pokemon
+            </div>
+            <div class="SideMenuBlock">
+                Team Builder
+            </div>
         </div>
-        <div id="footerPlaceholder"></div>
+        <div id="MainContainer">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" style="z-index: 1;">
+                <a class="navbar-brand" href="/">
+                    <img src='@Url.Content("~/Images/PokemonLogo.png")' height="40" style="padding: 5px 20px 0px 10px;" />
+                </a>
+                <button class="animated-nav-button" type="button" aria-label="Toggle navigation">
+                    <div class="animated-nav-icon"><span></span><span></span><span></span></div>
+                </button>
+            </nav>
+
+            <div id="navigationMenuOverlay">
+                <div id="bodyContainer">
+                    @RenderBody()
+                    <div id="footerPlaceholder"></div>
+                </div>
+                
+                <footer id="footerContainer">
+                    <span style="font-weight: 700;">Created and Designed by Connor Downes</span><br />
+                    Data provided by PokeAPI
+                </footer>
+            </div>
+        </div>
     </div>
 
-    <footer id="footerContainer">
-        <span style="font-weight: 700;">Created and Designed by Connor Downes</span><br />
-        Data provided by PokeAPI
-    </footer>
+    
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -38,7 +61,13 @@
             body.style.minHeight = window.innerHeight - (bannerHeight + footerHeight) + "px";
         }
 
-        
+        $(document).ready(function () {
+            $('.animated-nav-button').on('click', function () {
+                $('#SideMenuContainer').toggleClass('open');
+                $('.animated-nav-icon').toggleClass('open');
+                $('#navigationMenuOverlay').toggleClass('open');
+            });
+        });
 
         @RenderSection("scripts", required: false)
     </script>

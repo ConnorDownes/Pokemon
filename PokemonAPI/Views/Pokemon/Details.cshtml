@@ -7,13 +7,13 @@
 
 @if (Model != null)
 {
-<div style="padding: 5px; background-color: #f1f0cc; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom">
-    <div class="container">
-        <h2>
-            @Model.Root.name.First().ToString().ToUpper()@Model.Root.name.Substring(1)
-        </h2>
+    <div style="padding: 5px; background-color: #f1f0cc; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom">
+        <div class="container">
+            <h2>
+                @Model.Root.name.First().ToString().ToUpper()@Model.Root.name.Substring(1)
+            </h2>
+        </div>
     </div>
-</div>
     <div style="background-color: #f1f0cc; text-align: center; padding: 15px;">
         <div class="container">
             @foreach (var item in Model.PokemonEvolutionChain)
@@ -24,6 +24,86 @@
                         <span class="d-block">@item.species.name</span>
                     </div>
                 </a>
+            }
+        </div>
+    </div>
+    <div style="background-color: coral; text-align: center; padding: 15px; padding-bottom: 0px;">
+        <div class="container d-flex justify-content-center">
+            <div style="max-width: 400px; width: 100%; background-color: white;">
+                <div class="d-iblock br-3">
+                    @foreach (var image in Model.Root.sprites.GetType().GetProperties())
+                    {
+                        if (!String.IsNullOrEmpty((string)Model.Root.sprites.GetType().GetProperty(image.Name).GetValue(Model.Root.sprites)))
+                        {
+                            <img src="@Model.Root.sprites.GetType().GetProperty(image.Name).GetValue(Model.Root.sprites)" width="60" height="60" />
+                        }
+                    }
+                </div>
+                <table class="table table-sm table-responsive-sm text-left m-0">
+                    <tr>
+                        <td>@Html.LabelFor(m => m.Root.species.name, new { @class = "m-0" })</td>
+                        <td>@Model.Root.species.name</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.Root.types, new { @class = "m-0" })</td>
+                        <td>
+                            @foreach (var type in Model.Root.types)
+                            {
+                                <span class="badge badge-primary">@type.type.name</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.Root.base_experience, new { @class = "m-0" })</td>
+                        <td>@Model.Root.base_experience</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.Root.weight, new { @class = "m-0" })</td>
+                        <td>@Model.Root.weight</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.Root.height, new { @class = "m-0" })</td>
+                        <td>@Model.Root.height</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #333; color: white;" colspan="2">Base Stats</td>
+                    </tr>
+                    @foreach (var stat in Model.Root.stats)
+                    {
+                        <tr>
+                            <td>@stat.stat.name</td>
+                            <td>@stat.base_stat</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @Model.Root.game_indices.Select(m => m.game_index)
+
+    <div class="container">
+        <ul class="nav nav-pills">
+            @foreach (var details in Model.Root.moves[0].version_group_details)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="#@details.version_group.name" data-toggle="tab">@details.version_group.name</a>
+                </li>
+            }
+        </ul>
+
+        <div class="tab-content">
+            @foreach (var details in Model.Root.moves[0].version_group_details)
+            {
+            <div class="tab-pane" id="@details.version_group.name">
+                @foreach(var version in Model.Root.moves.GroupBy(m => m.version_group_details.Select(n => n.version_group)).Select(x => x.Key.Where(g => g == details.version_group)))
+                {
+                    foreach(var test in version)
+                    {
+                        <h2>@test.name</h2>
+                    }
+                }
+            </div>
             }
         </div>
     </div>

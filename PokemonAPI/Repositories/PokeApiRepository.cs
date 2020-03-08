@@ -1,18 +1,17 @@
-﻿using PokemonAPI.Factories;
-using PokemonAPI.Factories.Interfaces;
-using PokemonAPI.Models;
+﻿using PokemonAPI.Factories.Interfaces;
+using PokemonAPI.Models.PokeAPI.PokemonEvolution;
+using PokemonAPI.Models.PokeAPI.PokemonSpecies;
+using PokemonAPI.Models.PokeAPI.PokemonSpecifics;
 using PokemonAPI.Models.PokemonBasic;
 using PokemonAPI.Repositories.Interfaces;
-using PokemonAPI.Services;
 using PokemonAPI.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
+using System.Web.Mvc;
 
 namespace PokemonAPI.Repositories
 {
+    [OutputCache(Duration = 86400)]
     public class PokeApiRepository : IPokeApiRepository
     {
         private readonly IApiService _apiClient;
@@ -75,6 +74,34 @@ namespace PokemonAPI.Repositories
             var Evolution = _deserialiser.Deserialise<EvolutionInfo>(Response);
 
             return Evolution;
+        }
+
+        // Get the evolution chain from an initial Chain class
+        public async Task<List<Pokemon>> GetEvolutionChain(List<Chain> evolChain)
+        {
+            // List to contain the objects
+            var PokemonList = new List<Pokemon>();
+            // For each object in evolution chain, get the object from the API and add it to the list
+            foreach (var PokeEvolution in evolChain)
+            {
+                var CurrentPokemonResponse = await GetSinglePokemonAsync(PokeEvolution.species.name);
+                PokemonList.Add(CurrentPokemonResponse);
+            }
+            // Reloop through chain after all pokemon have been found above
+            // TODO: Look into a better way of doing this to avoid looping twice
+            foreach (var PokeEvolution in evolChain)
+            {
+                // If the current pokemon has an evolution, recursively run this function again to get the 
+                // pokemon in the next chain
+                if (PokeEvolution.evolves_to != null)
+                {
+                    // Add the returned pokemon to the list
+                    PokemonList.AddRange(await GetEvolutionChain(PokeEvolution.evolves_to));
+                }
+            }
+            // return the list of pokemon in the evolution chain
+            return PokemonList;
+
         }
     }
 }

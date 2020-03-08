@@ -165,53 +165,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EvolutionHelper.cs" />
-    <Compile Include="Models\EvolutionInfo.cs" />
-    <Compile Include="Models\PokemonBasic\PokemonBasic.cs" />
-    <Compile Include="Models\PokemonBasic\Result.cs" />
-    <Compile Include="Models\PokemonEvolution\Chain.cs" />
-    <Compile Include="Models\PokemonEvolution\EvolutionDetail.cs" />
-    <Compile Include="Models\PokemonEvolution\Species.cs" />
-    <Compile Include="Models\PokemonEvolution\Trigger.cs" />
-    <Compile Include="Models\PokemonEvolution\Trigger2.cs" />
-    <Compile Include="Models\pokemonSpecies.cs" />
-    <Compile Include="Models\PokemonSpecies\Area.cs" />
-    <Compile Include="Models\PokemonSpecies\Color.cs" />
-    <Compile Include="Models\PokemonSpecies\EggGroup.cs" />
-    <Compile Include="Models\PokemonSpecies\EvolutionChain.cs" />
-    <Compile Include="Models\PokemonSpecies\EvolvesFromSpecies.cs" />
-    <Compile Include="Models\PokemonSpecies\FlavorTextEntry.cs" />
-    <Compile Include="Models\PokemonSpecies\Genera.cs" />
-    <Compile Include="Models\PokemonSpecies\Generation.cs" />
-    <Compile Include="Models\PokemonSpecies\GrowthRate.cs" />
-    <Compile Include="Models\PokemonSpecies\Habitat.cs" />
-    <Compile Include="Models\PokemonSpecies\Language.cs" />
-    <Compile Include="Models\PokemonSpecies\Language2.cs" />
-    <Compile Include="Models\PokemonSpecies\Language3.cs" />
-    <Compile Include="Models\PokemonSpecies\Name.cs" />
-    <Compile Include="Models\PokemonSpecies\PalParkEncounter.cs" />
-    <Compile Include="Models\PokemonSpecies\Pokedex.cs" />
-    <Compile Include="Models\PokemonSpecies\PokedexNumber.cs" />
-    <Compile Include="Models\PokemonSpecies\Pokemon.cs" />
-    <Compile Include="Models\PokemonSpecies\Shape.cs" />
-    <Compile Include="Models\PokemonSpecies\Variety.cs" />
-    <Compile Include="Models\PokemonSpecies\Version.cs" />
-    <Compile Include="Models\PokemonSpecifics\Ability.cs" />
-    <Compile Include="Models\PokemonSpecifics\Ability2.cs" />
-    <Compile Include="Models\PokemonSpecifics\Form.cs" />
-    <Compile Include="Models\PokemonSpecifics\GameIndice.cs" />
-    <Compile Include="Models\PokemonSpecifics\Move.cs" />
-    <Compile Include="Models\PokemonSpecifics\Move2.cs" />
-    <Compile Include="Models\PokemonSpecifics\MoveLearnMethod.cs" />
-    <Compile Include="Models\Pokemon.cs" />
-    <Compile Include="Models\PokemonSpecifics\Species.cs" />
-    <Compile Include="Models\PokemonSpecifics\Sprites.cs" />
-    <Compile Include="Models\PokemonSpecifics\Stat.cs" />
-    <Compile Include="Models\PokemonSpecifics\Type.cs" />
-    <Compile Include="Models\PokemonSpecifics\Type2.cs" />
-    <Compile Include="Models\PokemonSpecifics\Version.cs" />
-    <Compile Include="Models\PokemonSpecifics\VersionGroup.cs" />
-    <Compile Include="Models\PokemonSpecifics\VersionGroupDetail.cs" />
+    <Compile Include="Models\PokeAPI\PokemonEvolution\EvolutionInfo.cs" />
+    <Compile Include="Models\PokeAPI\PokemonBasic\PokemonBasic.cs" />
+    <Compile Include="Models\PokeAPI\Result.cs" />
+    <Compile Include="Models\PokeAPI\PokemonEvolution\Chain.cs" />
+    <Compile Include="Models\PokeAPI\PokemonEvolution\EvolutionDetail.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecies\pokemonSpecies.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecies\EvolutionChain.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecies\FlavorTextEntry.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecies\Genera.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecies\Name.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecies\PalParkEncounter.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecies\PokedexNumber.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecies\Variety.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\Ability.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\GameIndice.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\Move.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\Pokemon.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\Sprites.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\Stat.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\Type.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\VersionGroupDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Interfaces\IPokeApiRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
@@ -368,6 +342,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
