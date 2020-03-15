@@ -1,3 +1,4 @@
+using AutoMapper;
 using PokemonAPI.Factories;
 using PokemonAPI.Factories.Interfaces;
 using PokemonAPI.Repositories;
@@ -42,15 +43,19 @@ namespace PokemonAPI
         /// </remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            // NOTE: To load from web.config uncomment the line below.
-            // Make sure to add a Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
+            var config = new MapperConfiguration(cfg =>
+            {
+
+            });
+
+            IMapper mapper = config.CreateMapper();
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IFactory, DeserialiserFactory>();
             container.RegisterType<IApiService, HTTPClientService>();
             container.RegisterType<IPokeApiRepository, PokeApiRepository>();
+            container.RegisterInstance(mapper);
         }
     }
 }

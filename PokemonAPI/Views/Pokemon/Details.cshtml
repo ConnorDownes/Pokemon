@@ -10,7 +10,7 @@
     <div style="padding: 5px; background-color: #f1f0cc; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom">
         <div class="container">
             <h2>
-                @Model.Root.name.First().ToString().ToUpper()@Model.Root.name.Substring(1)
+                @($"{Model.Root.name.First().ToString().ToUpper()}{@Model.Root.name.Substring(1)}") <span style="color: #AAA;" class="font-italic">@($"#{Model.Root.game_indices[0].game_index}")</span>
             </h2>
         </div>
     </div>
@@ -80,36 +80,50 @@
         </div>
     </div>
 
-    @Model.Root.game_indices.Select(m => m.game_index)
-
     <div class="container">
         <ul class="nav nav-pills">
-            @foreach (var details in Model.Root.moves[0].version_group_details)
+            @for (int counter = 0; counter < Model.Root.moves[0].version_group_details.Count; counter++)
             {
                 <li class="nav-item">
-                    <a class="nav-link" href="#@details.version_group.name" data-toggle="tab">@details.version_group.name</a>
+                    <a class="nav-link @(counter == 0 ? "active" : "")" href="#@Model.Root.moves[0].version_group_details[counter].version_group.name" data-toggle="tab">@Model.Root.moves[0].version_group_details[counter].version_group.name</a>
                 </li>
             }
         </ul>
 
         <div class="tab-content">
-            @foreach (var details in Model.Root.moves[0].version_group_details)
+            <!-- Model.Root.moves[0].version_group_details.Count -->
+            @Model.Root.moves.GroupBy(m => m.version_group_details).Select(m => m.Key.Count()).Max()
+            <!--for (int counter = 0; counter < Model.Root.moves.GroupBy(m => m.version_group_details).Select(m => m.Key.Count()).Max(); counter++)
             {
-            <div class="tab-pane" id="@details.version_group.name">
-                @foreach(var version in Model.Root.moves.GroupBy(m => m.version_group_details.Select(n => n.version_group)).Select(x => x.Key.Where(g => g == details.version_group)))
-                {
-                    foreach(var test in version)
+                <div class="tab-pane (counter == 0 ? "active" : "")" id="Model.Root.moves[0].version_group_details[counter].version_group.name">
+                    <table>
+                        @*@foreach (var item in Model.Root.moves.GroupBy(m => m.version_group_details).SelectMany(m => m.Key))
+                        {
+                            <tr>
+                                <td>@item.level_learned_at</td>
+                                <td>@item.move_learn_method</td>
+                            </tr>
+                        }*@
+
+                        @*@foreach (var version in Model.Root.moves.Where(m => m.version_group_details.Select(n => n.version_group.name).Equals(Model.Root.moves[0].version_group_details[counter].version_group.name)))
                     {
-                        <h2>@test.name</h2>
-                    }
-                }
-            </div>
-            }
+                        <tr>
+                            <td>@version.move.name</td>
+                        </tr>
+                    }*@
+                    </table>
+                </div>
+            }-->
         </div>
     </div>
 
+    <div>
+        @Model.Root.moves.SelectMany(m => m.version_group_details.Select(n => n.version_group.name)).FirstOrDefault()
+        @Model.Root.moves[0].version_group_details[0].version_group.name
+    </div>
+
     <div class="container">
-        <table class="table">
+        <table class="table table-sm table-responsive-sm">
             <thead class="thead-dark">
                 <tr>
                     <th colspan="2">

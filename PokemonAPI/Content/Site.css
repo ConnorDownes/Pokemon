@@ -4,12 +4,18 @@
 }
 
 #SideMenuContainer {
-    width: 0px;
+    max-width: calc(100% - 88px);
     flex: 0 0 0;
     overflow: hidden;
     z-index: 1000;
     background-color: white;
     overflow-y: auto;
+    /* Enable hardware acceleration to fix laggy transitions */
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
     transition: flex-basis 0.5s;
 }
 
@@ -39,6 +45,7 @@
 
 #MainContainer {
     flex: 1;
+    overflow-x: hidden;
     overflow-y: auto;
     height: 100%;
 }
@@ -296,11 +303,11 @@ a.i-text:hover {
     }
 
 .animated-nav-button {
-    padding: 0;
+    padding: 23px;
     border: 0;
     background-color: inherit;
     position: absolute;
-    right: 25px;
+    right: 0px;
 }
 
 @media (max-width: 768px) {

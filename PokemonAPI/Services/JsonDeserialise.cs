@@ -11,7 +11,13 @@ namespace PokemonAPI.Services
     {
         public T Deserialise<T>(string Content)
         {
-            return JsonConvert.DeserializeObject<T>(Content);
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
+
+            return JsonConvert.DeserializeObject<T>(Content, settings);
         }
 
         #region IDisposable Support
