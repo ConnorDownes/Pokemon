@@ -82,21 +82,35 @@
 
     <div class="container">
         <ul class="nav nav-pills">
-            @for (int counter = 0; counter < Model.Root.moves[0].version_group_details.Count; counter++)
+            @{IEnumerable<string> list = Model.Root.moves.GroupBy(m => m.version_group_details.Select(n => n.version_group.name).Distinct()).OrderByDescending(m => m.Key.Count()).Select(m => m.Key).First();}
+            @for (int counter = 0; counter < list.Count(); counter++)
             {
                 <li class="nav-item">
-                    <a class="nav-link @(counter == 0 ? "active" : "")" href="#@Model.Root.moves[0].version_group_details[counter].version_group.name" data-toggle="tab">@Model.Root.moves[0].version_group_details[counter].version_group.name</a>
+                    <a class="nav-link @(counter == 0 ? "active" : "")" href="#TabMoveSet_@counter" data-toggle="tab">@list.ElementAt(counter)</a>
+                    @*<a class="nav-link @(counter == 0 ? "active" : "")" href="#TabMoveSet_@counter" data-toggle="tab">@Model.Root.moves.GroupBy(m => m.version_group_details).Select(m => m.Key.Count())</a>*@
                 </li>
             }
         </ul>
 
+        <h2>@list.ElementAt(0)</h2>
+        @foreach (var item in Model.Root.moves.Where(m => m.version_group_details.All(n => n.version_group.name.Equals(list.ElementAt(0)))))
+        {
+            <p>@item.move.name</p>
+        }
+
         <div class="tab-content">
             <!-- Model.Root.moves[0].version_group_details.Count -->
-            @Model.Root.moves.GroupBy(m => m.version_group_details).Select(m => m.Key.Count()).Max()
-            <!--for (int counter = 0; counter < Model.Root.moves.GroupBy(m => m.version_group_details).Select(m => m.Key.Count()).Max(); counter++)
+            @for (int counter = 0; counter < list.Count(); counter++)
             {
-                <div class="tab-pane (counter == 0 ? "active" : "")" id="Model.Root.moves[0].version_group_details[counter].version_group.name">
+                <div class="tab-pane @(counter == 0 ? "active" : "")" id="TabMoveSet_@counter">
                     <table>
+                        @foreach (var item in Model.Root.moves.Where(m => m.version_group_details.Select(n => n.version_group.name).Equals(list.ElementAt(counter))))
+                        {
+                            <tr>
+                                <td>@item.move.name</td>
+                            </tr>
+                        }
+
                         @*@foreach (var item in Model.Root.moves.GroupBy(m => m.version_group_details).SelectMany(m => m.Key))
                         {
                             <tr>
@@ -106,14 +120,14 @@
                         }*@
 
                         @*@foreach (var version in Model.Root.moves.Where(m => m.version_group_details.Select(n => n.version_group.name).Equals(Model.Root.moves[0].version_group_details[counter].version_group.name)))
-                    {
-                        <tr>
-                            <td>@version.move.name</td>
-                        </tr>
-                    }*@
+                        {
+                            <tr>
+                                <td>@version.move.name</td>
+                            </tr>
+                        }*@
                     </table>
                 </div>
-            }-->
+            }
         </div>
     </div>
 
