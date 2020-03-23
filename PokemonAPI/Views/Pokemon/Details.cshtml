@@ -5,70 +5,105 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section MetaContent
+{
+    <script src="https://kit.fontawesome.com/8fce7ab7f2.js" crossorigin="anonymous"></script>
+}
+
+<style>
+    .EvolutionArrow::before {
+        content: "\f105";
+    }
+
+    @@media (max-width: 576px) {
+        .EvolutionArrow::before {
+            content: "\f107";
+        }
+    }
+</style>
+
 @if (Model != null)
 {
     <div style="padding: 5px; background-color: #f1f0cc; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom">
         <div class="container">
             <h2>
-                @($"{Model.Root.name.First().ToString().ToUpper()}{@Model.Root.name.Substring(1)}") <span style="color: #AAA;" class="font-italic">@($"#{Model.Root.game_indices[0].game_index}")</span>
+                @Model.Pokemon.Name <span class="font-italic">@($"#{Model.Pokemon.Id}")</span>
             </h2>
+            <p>@Model.Species.Description</p>
         </div>
     </div>
     <div style="background-color: #f1f0cc; text-align: center; padding: 15px;">
-        <div class="container">
-            @foreach (var item in Model.PokemonEvolutionChain)
-            {
-                <a href="@Url.Action(null, new { name = item.name })" class="i-text @(item.name.ToUpper() == Model.Root.name.ToUpper() ? "noclick" : "")">
-                    <div class="d-iblock br-3 p-10 @(item.name.ToUpper() == Model.Root.name.ToUpper() ? "white-text red-bg black-border noclick" : "black-text hover grey-bg")" style="padding: 0px 5px;">
-                        <img src="@item.sprites.front_default" width="90" height="90" />
-                        <span class="d-block">@item.species.name</span>
-                    </div>
-                </a>
-            }
+        <div class="container d-flex justify-content-center">
+            <div class="row text-center justify-content-center" style="flex-basis: auto;">
+                @for (int counter = 0; counter < Model.PokemonEvolutionChain.Count(); counter++)
+                {
+                    foreach (var Pokemon in Model.PokemonEvolutionChain[counter])
+                    {
+                        <div class="col-sm-auto">
+                            <a href="@Url.Action(null, new { name = Pokemon.Name })" class="i-text @(Pokemon.Name.ToUpper() == Model.Pokemon.Name.ToUpper() ? "noclick" : "")">
+                                <div class="br-10 p-10 @(Pokemon.Name.ToUpper() == Model.Pokemon.Name.ToUpper() ? "white-text red-bg black-border noclick" : "black-text hover grey-bg")" style="padding: 0px 5px;">
+                                    <img src="@Pokemon.Image" width="90" height="90" />
+                                    <div class="d-block">@Pokemon.Name <span class="font-italic">#@Pokemon.Id</span></div>
+                                    @foreach (var type in Pokemon.Types)
+                                    {
+                                        <span class="badge bg-@type.type.name" style="padding: 5px;">@type.type.name</span>
+                                    }
+                                </div>
+                            </a>
+                        </div>
+                    }
+                    if (counter < Model.PokemonEvolutionChain.Count() - 1)
+                    {
+                        <div class="col-sm-auto d-flex align-items-center justify-content-center">
+                            <i class="fas EvolutionArrow" style="padding: 15px;"></i>
+                        </div>
+                    }
+                }
+            </div>
         </div>
     </div>
     <div style="background-color: coral; text-align: center; padding: 15px; padding-bottom: 0px;">
         <div class="container d-flex justify-content-center">
             <div style="max-width: 400px; width: 100%; background-color: white;">
                 <div class="d-iblock br-3">
-                    @foreach (var image in Model.Root.sprites.GetType().GetProperties())
+                    @foreach (var image in Model.Pokemon.Sprites.GetType().GetProperties())
                     {
-                        if (!String.IsNullOrEmpty((string)Model.Root.sprites.GetType().GetProperty(image.Name).GetValue(Model.Root.sprites)))
+                        if (!String.IsNullOrEmpty((string)Model.Pokemon.Sprites.GetType().GetProperty(image.Name).GetValue(Model.Pokemon.Sprites)))
                         {
-                            <img src="@Model.Root.sprites.GetType().GetProperty(image.Name).GetValue(Model.Root.sprites)" width="60" height="60" />
+                            <img src="@Model.Pokemon.Sprites.GetType().GetProperty(image.Name).GetValue(Model.Pokemon.Sprites)" width="60" height="60" />
                         }
                     }
                 </div>
                 <table class="table table-sm table-responsive-sm text-left m-0">
                     <tr>
-                        <td>@Html.LabelFor(m => m.Root.species.name, new { @class = "m-0" })</td>
-                        <td>@Model.Root.species.name</td>
+                        <td>@Html.LabelFor(m => m.Pokemon.Name, new { @class = "m-0" })</td>
+                        <td>@Model.Pokemon.Name</td>
                     </tr>
                     <tr>
-                        <td>@Html.LabelFor(m => m.Root.types, new { @class = "m-0" })</td>
+                        <td>@Html.LabelFor(m => m.Pokemon.Types, new { @class = "m-0" })</td>
                         <td>
-                            @foreach (var type in Model.Root.types)
+                            @foreach (var type in Model.Pokemon.Types)
                             {
-                                <span class="badge badge-primary">@type.type.name</span>
+                                <span class="badge bg-@type.type.name">@type.type.name</span>
                             }
                         </td>
                     </tr>
                     <tr>
-                        <td>@Html.LabelFor(m => m.Root.base_experience, new { @class = "m-0" })</td>
-                        <td>@Model.Root.base_experience</td>
+                        <td>@Html.LabelFor(m => m.Pokemon.Stats.Experience, new { @class = "m-0" })</td>
+                        <td>@Model.Pokemon.Stats.Experience</td>
                     </tr>
                     <tr>
-                        <td>@Html.LabelFor(m => m.Root.weight, new { @class = "m-0" })</td>
-                        <td>@Model.Root.weight</td>
+                        <td>@Html.LabelFor(m => m.Pokemon.Stats.Weight, new { @class = "m-0" })</td>
+                        <td>@Model.Pokemon.Stats.Weight</td>
                     </tr>
                     <tr>
-                        <td>@Html.LabelFor(m => m.Root.height, new { @class = "m-0" })</td>
-                        <td>@Model.Root.height</td>
+                        <td>@Html.LabelFor(m => m.Pokemon.Stats.Height, new { @class = "m-0" })</td>
+                        <td>@Model.Pokemon.Stats.Height</td>
                     </tr>
                     <tr>
                         <td style="background-color: #333; color: white;" colspan="2">Base Stats</td>
                     </tr>
-                    @foreach (var stat in Model.Root.stats)
+                    @foreach (var stat in Model.Pokemon.Stats.BaseStats)
                     {
                         <tr>
                             <td>@stat.stat.name</td>
@@ -82,21 +117,14 @@
 
     <div class="container">
         <ul class="nav nav-pills">
-            @{IEnumerable<string> list = Model.Root.moves.GroupBy(m => m.version_group_details.Select(n => n.version_group.name).Distinct()).OrderByDescending(m => m.Key.Count()).Select(m => m.Key).First();}
+            @{IEnumerable<string> list = Model.Pokemon.Moves.GroupBy(m => m.version_group_details.Select(n => n.version_group.name).Distinct()).OrderByDescending(m => m.Key.Count()).Select(m => m.Key).First();}
             @for (int counter = 0; counter < list.Count(); counter++)
             {
                 <li class="nav-item">
                     <a class="nav-link @(counter == 0 ? "active" : "")" href="#TabMoveSet_@counter" data-toggle="tab">@list.ElementAt(counter)</a>
-                    @*<a class="nav-link @(counter == 0 ? "active" : "")" href="#TabMoveSet_@counter" data-toggle="tab">@Model.Root.moves.GroupBy(m => m.version_group_details).Select(m => m.Key.Count())</a>*@
                 </li>
             }
         </ul>
-
-        <h2>@list.ElementAt(0)</h2>
-        @foreach (var item in Model.Root.moves.Where(m => m.version_group_details.All(n => n.version_group.name.Equals(list.ElementAt(0)))))
-        {
-            <p>@item.move.name</p>
-        }
 
         <div class="tab-content">
             <!-- Model.Root.moves[0].version_group_details.Count -->
@@ -104,36 +132,35 @@
             {
                 <div class="tab-pane @(counter == 0 ? "active" : "")" id="TabMoveSet_@counter">
                     <table>
-                        @foreach (var item in Model.Root.moves.Where(m => m.version_group_details.Select(n => n.version_group.name).Equals(list.ElementAt(counter))))
+                        @foreach (var item in Model.Pokemon.Moves.Select(m => m.version_group_details.Where(n => n.version_group.name.Equals(list.ElementAt(counter))).Select(n => n)))
                         {
                             <tr>
-                                <td>@item.move.name</td>
+                                @*<td>@item.move.move.name</td>
+                                    @foreach(var subitem in item.version)
+                                    {
+                                        <td>@subitem.level_learned_at</td>
+                                    }*@
                             </tr>
                         }
 
                         @*@foreach (var item in Model.Root.moves.GroupBy(m => m.version_group_details).SelectMany(m => m.Key))
-                        {
-                            <tr>
-                                <td>@item.level_learned_at</td>
-                                <td>@item.move_learn_method</td>
-                            </tr>
-                        }*@
+                            {
+                                <tr>
+                                    <td>@item.level_learned_at</td>
+                                    <td>@item.move_learn_method</td>
+                                </tr>
+                            }*@
 
                         @*@foreach (var version in Model.Root.moves.Where(m => m.version_group_details.Select(n => n.version_group.name).Equals(Model.Root.moves[0].version_group_details[counter].version_group.name)))
-                        {
-                            <tr>
-                                <td>@version.move.name</td>
-                            </tr>
-                        }*@
+                            {
+                                <tr>
+                                    <td>@version.move.name</td>
+                                </tr>
+                            }*@
                     </table>
                 </div>
             }
         </div>
-    </div>
-
-    <div>
-        @Model.Root.moves.SelectMany(m => m.version_group_details.Select(n => n.version_group.name)).FirstOrDefault()
-        @Model.Root.moves[0].version_group_details[0].version_group.name
     </div>
 
     <div class="container">
@@ -149,7 +176,7 @@
                     <th>Hidden</th>
                 </tr>
             </thead>
-            @foreach (var ability in Model.Root.abilities)
+            @foreach (var ability in Model.Pokemon.Abilities)
             {
                 <tbody>
                     <tr>

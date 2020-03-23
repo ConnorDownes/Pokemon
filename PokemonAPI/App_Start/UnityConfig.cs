@@ -1,4 +1,5 @@
 using AutoMapper;
+using PokemonAPI.App_Start.MappingConfigurations;
 using PokemonAPI.Factories;
 using PokemonAPI.Factories.Interfaces;
 using PokemonAPI.Repositories;
@@ -45,7 +46,8 @@ namespace PokemonAPI
         {
             var config = new MapperConfiguration(cfg =>
             {
-
+                cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+                cfg.AddProfile<PokemonProfile>();
             });
 
             IMapper mapper = config.CreateMapper();

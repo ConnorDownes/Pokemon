@@ -1,34 +1,29 @@
-﻿@model PokemonAPI.Models.PokemonBasic.PokemonBasic
+﻿@model List<PokemonAPI.ViewModels.PokemonVM.BasicWithImage>
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.results[0].name)
-            </th>
-            <th>
-
-            </th>
-        </tr>
-    
-    @foreach (var item in Model.results) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                @Html.ActionLink("View", "Details", new { name = item.name })
-            </td>
-        </tr>
+<style>
+    .pokemonBlock {
+        border: 1px solid #333;
+        padding: 10px;
+        margin: 5px;
     }
-    
-    </table>
-</body>
-</html>
+</style>
+
+<div class="container p-10">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3 p-0">
+                <a href="@Url.Action("Details", "Pokemon", new { name = item.Name })">
+                    <div class="pokemonBlock bg-@item.Types.Last().type.name">
+                        <div>
+                            <img src="@item.Image" />
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

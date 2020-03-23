@@ -4,9 +4,11 @@
 }
 
 #SideMenuContainer {
-    max-width: calc(100% - 88px);
-    flex: 0 0 0;
+    max-width: calc(100% - 65px);
     overflow: hidden;
+    position: absolute;
+    height: 100%;
+    width: 0;
     z-index: 1000;
     background-color: white;
     overflow-y: auto;
@@ -16,11 +18,11 @@
     -ms-transform: translateZ(0);
     -o-transform: translateZ(0);
     transform: translateZ(0);
-    transition: flex-basis 0.5s;
+    transition: width 0.5s;
 }
 
 #SideMenuContainer.open {
-    flex-basis: 350px;
+    width: 350px;
 }
 
 .SideMenuBlock, .SideMenuTopBlock {
@@ -103,23 +105,6 @@ textarea {
     max-width: 280px;
 }
 
-#BannerContainer {
-    width: 100%;
-    height: 15vh;
-    position: relative;
-    background-image: url("/Images/PokemonBanner.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin-bottom: 3px;
-    margin: 0px;
-}
-
-#BannerContainer .navbar {
-    position: absolute;
-    bottom: 0px;
-}
-
 .white-bg {
     background-color: white;
 }
@@ -174,6 +159,10 @@ z-1000 {
 
 .br-3 {
     border-radius: 3px;
+}
+
+.br-10 {
+    border-radius: 10px;
 }
 
 .btn-blue {
@@ -308,6 +297,107 @@ a.i-text:hover {
     background-color: inherit;
     position: absolute;
     right: 0px;
+}
+
+.lightgrey-text {
+    color: #CCC;
+}
+
+/*
+    Types
+*/
+
+.bg-fire, .bg-Fire {
+    background-color: #fd7d24;
+    color: white;
+}
+
+.bg-water, .bg-Water {
+    background-color: #4592c4;
+    color: white;
+}
+
+.bg-grass, .bg-Grass {
+    background-color: #9bcc50;
+    color: black;
+}
+
+.bg-poison, .bg-Poison {
+    background-color: #b97fc9;
+    color: white;
+}
+
+.bg-bug, .bg-Bug {
+    background-color: #729f3f;
+    color: white;
+}
+
+.bg-electric, .bg-Electric {
+    background-color: #eed535;
+    color: black;
+}
+
+.bg-steel, .bg-Steel {
+    background-color: #9eb7b8;
+    color: black;
+}
+
+.bg-psychic, .bg-Psychic {
+    background-color: #f366b9;
+    color: black;
+}
+
+.bg-ice, .bg-Ice {
+    background-color: #51c4e7;
+    color: black;
+}
+
+.bg-flying, .bg-Flying {
+    background: linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+    background-color: #3dc7ef;
+    color: black;
+}
+
+.bg-dark, .bg-Dark {
+    background-color: #707070;
+    color: white;
+}
+
+.bg-ground, .bg-Ground {
+    background: linear-gradient(180deg, #f7de3f 50%, #ab9842 50%);
+    background-color: #f7de3f;
+    color: black;
+}
+
+.bg-fighting, .bg-Fighting {
+    background-color: #d56723;
+    color: white;
+}
+
+.bg-ghost, .bg-Ghost {
+    background-color: #7b62a3;
+    color: white;
+}
+
+.bg-fairy, .bg-Fairy {
+    background-color: #fdb9e9;
+    color: black;
+}
+
+.bg-dragon, .bg-Dragon {
+    background: linear-gradient(180deg, #53a4cf 50%, #f16e57 50%);
+    background-color: #53a4cf;
+    color: white;
+}
+
+.bg-rock, .bg-Rock {
+    background-color: #a38c21;
+    color: white;
+}
+
+.bg-normal, .bg-Normal {
+    background-color: #a4acaf;
+    color: black;
 }
 
 @media (max-width: 768px) {

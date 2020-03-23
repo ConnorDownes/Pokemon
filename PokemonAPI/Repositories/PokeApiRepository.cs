@@ -77,31 +77,34 @@ namespace PokemonAPI.Repositories
         }
 
         // Get the evolution chain from an initial Chain class
-        public async Task<List<Pokemon>> GetEvolutionChain(List<Chain> evolChain)
+        public async Task<List<List<Pokemon>>> GetEvolutionChain(List<Chain> initialEvolChain)
         {
-            // List to contain the objects
+            var PokemonEvolutionStageList = new List<List<Pokemon>>();
+
+            PokemonEvolutionStageList.Add(await GetPokemonInEvolutionStage(initialEvolChain));
+
+            foreach (var evolutionStage in initialEvolChain)
+            {
+                if (evolutionStage.evolves_to.Count > 0)
+                {
+                    PokemonEvolutionStageList.AddRange(await GetEvolutionChain(evolutionStage.evolves_to));
+                }
+            }
+
+            return PokemonEvolutionStageList;
+        }
+
+        private async Task<List<Pokemon>> GetPokemonInEvolutionStage(List<Chain> evolutionStage)
+        {
             var PokemonList = new List<Pokemon>();
-            // For each object in evolution chain, get the object from the API and add it to the list
-            foreach (var PokeEvolution in evolChain)
+
+            foreach (var PokeEvolution in evolutionStage)
             {
                 var CurrentPokemonResponse = await GetSinglePokemonAsync(PokeEvolution.species.name);
                 PokemonList.Add(CurrentPokemonResponse);
             }
-            // Reloop through chain after all pokemon have been found above
-            // TODO: Look into a better way of doing this to avoid looping twice
-            foreach (var PokeEvolution in evolChain)
-            {
-                // If the current pokemon has an evolution, recursively run this function again to get the 
-                // pokemon in the next chain
-                if (PokeEvolution.evolves_to != null)
-                {
-                    // Add the returned pokemon to the list
-                    PokemonList.AddRange(await GetEvolutionChain(PokeEvolution.evolves_to));
-                }
-            }
-            // return the list of pokemon in the evolution chain
-            return PokemonList;
 
+            return PokemonList;
         }
     }
 }

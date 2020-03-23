@@ -1,16 +1,15 @@
 ﻿using PokemonAPI.Models.PokeAPI.PokemonEvolution;
 using PokemonAPI.Models.PokeAPI.PokemonSpecies;
-using PokemonAPI.Models.PokeAPI.PokemonSpecifics;
+using Pokemon = PokemonAPI.Models.PokeAPI.PokemonSpecifics.Pokemon;
 using System.Collections.Generic;
+using PokemonAPI.ViewModels.PokemonVM;
 
 namespace PokemonAPI.ViewModels
 {
     public class PokemonDetails
     {
-        public string name { get; set; }
-        public Pokemon Root { get; set; }
-        public EvolutionInfo Evolve { get; set; }
-        public pokemonSpecies Species { get; set; }
-        public List<Pokemon> PokemonEvolutionChain { get; set; }
+        public Detailed Pokemon { get; set; }
+        public SpeciesBasic Species { get; set; }
+        public List<IEnumerable<BasicWithImage>> PokemonEvolutionChain { get; set; }
     }
 }

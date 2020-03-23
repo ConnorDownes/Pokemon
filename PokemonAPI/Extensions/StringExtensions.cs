@@ -7,7 +7,7 @@ namespace PokemonAPI.Extensions
 {
     public static class StringExtensions
     {
-        public static string Capitalise(string str)
+        public static string Capitalise(this string str)
         {
             return str.First().ToString().ToUpper() + str.Substring(1);
         }

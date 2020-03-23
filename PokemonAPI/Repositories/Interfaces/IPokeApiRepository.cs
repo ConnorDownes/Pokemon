@@ -15,6 +15,6 @@ namespace PokemonAPI.Repositories.Interfaces
         Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(string name);
         Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(int id);
         Task<EvolutionInfo> GetPokemonEvolutionInfoAsync(string evolutionURL);
-        Task<List<Pokemon>> GetEvolutionChain(List<Chain> evolChain);
+        Task<List<List<Pokemon>>> GetEvolutionChain(List<Chain> evolChain);
     }
 }

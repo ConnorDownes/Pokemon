@@ -9,7 +9,7 @@ namespace PokemonAPI.Models.PokeAPI.PokemonSpecifics
         public List<Result> forms { get; set; }
         public List<GameIndice> game_indices { get; set; }
         public int height { get; set; }
-        public List<object> held_items { get; set; }
+        public List<HeldItem> held_items { get; set; }
         public int id { get; set; }
         public bool is_default { get; set; }
         public string location_area_encounters { get; set; }

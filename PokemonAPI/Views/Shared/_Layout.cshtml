@@ -6,6 +6,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("MetaContent", false)
 </head>
 <body>
     
@@ -54,13 +55,6 @@
     @Scripts.Render("~/bundles/bootstrap")
 
     <script type="text/javascript">
-        function dynamicBodyHeight() {
-            let body = document.getElementById("bodyContainer");
-            let footerHeight = $("#footerContainer").outerHeight(true);
-            let bannerHeight = $("#BannerContainer").outerHeight(true);
-            body.style.minHeight = window.innerHeight - (bannerHeight + footerHeight) + "px";
-        }
-
         $(document).ready(function () {
             $('.animated-nav-button').on('click', function () {
                 $('#SideMenuContainer').toggleClass('open');

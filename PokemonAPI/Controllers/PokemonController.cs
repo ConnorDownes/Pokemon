@@ -1,13 +1,17 @@
-﻿using PokemonAPI.Factories.Interfaces;
+﻿using AutoMapper;
+using PokemonAPI.Factories.Interfaces;
 using PokemonAPI.Models.PokeAPI.PokemonEvolution;
+using PokemonAPI.Models.PokeAPI.PokemonSpecifics;
 using PokemonAPI.Repositories.Interfaces;
 using PokemonAPI.Services;
 using PokemonAPI.Services.Interfaces;
 using PokemonAPI.ViewModels;
+using PokemonAPI.ViewModels.PokemonVM;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace PokemonAPI.Controllers
 {
@@ -15,17 +19,24 @@ namespace PokemonAPI.Controllers
     public class PokemonController : Controller
     {
         private readonly IPokeApiRepository _pokeApiRepo;
+        private readonly IMapper _mapper;
 
-        public PokemonController(IPokeApiRepository pokeApiRepo)
+        public PokemonController(IPokeApiRepository pokeApiRepo, IMapper mapper)
         {
             _pokeApiRepo = pokeApiRepo;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult> Index(int page = 1, int limit = 20)
+        public async Task<ActionResult> Index(int page = 1, int limit = 2000)
         {
             var Response = await _pokeApiRepo.GetAllPokemonAsync(limit, (page - 1) * limit);
-            return View(Response);
+
+            var ResultTasks = Response.results.Take(20).Select(async m => _mapper.Map<BasicWithImage>(await _pokeApiRepo.GetSinglePokemonAsync(m.name))).ToList();
+            //
+            var Results = await Task.WhenAll(ResultTasks);
+
+            return View(Results.ToList());
         }
 
         // POST: Pokemon
@@ -33,7 +44,7 @@ namespace PokemonAPI.Controllers
         [Route("{name}")]
         public async Task<ActionResult> Details(string name)
         {
-            var Species = await _pokeApiRepo.GetSinglePokemonSpeciesAsync(name);
+            var Species = await _pokeApiRepo.GetSinglePokemonSpeciesAsync(name.ToLower());
 
             if (Species == null)
             {
@@ -44,18 +55,16 @@ namespace PokemonAPI.Controllers
             var PokemonInfoTask = _pokeApiRepo.GetSinglePokemonAsync(Species.id);
             await Task.WhenAll(EvolutionInfoTask, PokemonInfoTask);
             var EvolutionInfo = EvolutionInfoTask.Result;
-            var PokemonInfo = PokemonInfoTask.Result;
-            // move this method into the repository to allow it to be re-used
-            // Add a service and put this in there
-            var imageList = await _pokeApiRepo.GetEvolutionChain(new List<Chain>() { EvolutionInfo.chain });
+            var PokemonInfo = _mapper.Map<Detailed>(PokemonInfoTask.Result);
+
+            var imageList = from Pokemon in await _pokeApiRepo.GetEvolutionChain(new List<Chain>() { EvolutionInfo.chain })
+                            select Pokemon.Select(m => _mapper.Map<BasicWithImage>(m));
 
             return View(new PokemonDetails
             {
-                name = name,
-                Root = PokemonInfo,
-                Evolve = EvolutionInfo,
-                Species = Species,
-                PokemonEvolutionChain = imageList
+                Pokemon = PokemonInfo,
+                Species = _mapper.Map<SpeciesBasic>(Species),
+                PokemonEvolutionChain = imageList.ToList()
             });
         }
     }

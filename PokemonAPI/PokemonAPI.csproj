@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -49,6 +50,12 @@
   <ItemGroup>
     <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -158,11 +165,14 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MappingConfigurations\PokemonApiProfile.cs" />
+    <Compile Include="App_Start\MappingConfigurations\PokemonProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\PokemonController.cs" />
     <Compile Include="Enums\ApiResponseFormat.cs" />
+    <Compile Include="Enums\SpriteType.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Factories\DeserialiserFactory.cs" />
     <Compile Include="Factories\Interfaces\IFactory.cs" />
@@ -171,6 +181,8 @@
     </Compile>
     <Compile Include="Models\PokeAPI\PokemonEvolution\EvolutionInfo.cs" />
     <Compile Include="Models\PokeAPI\PokemonBasic\PokemonBasic.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\HeldItem.cs" />
+    <Compile Include="Models\PokeAPI\PokemonSpecifics\VersionDetail.cs" />
     <Compile Include="Models\PokeAPI\Result.cs" />
     <Compile Include="Models\PokeAPI\PokemonEvolution\Chain.cs" />
     <Compile Include="Models\PokeAPI\PokemonEvolution\EvolutionDetail.cs" />
@@ -190,6 +202,18 @@
     <Compile Include="Models\PokeAPI\PokemonSpecifics\Stat.cs" />
     <Compile Include="Models\PokeAPI\PokemonSpecifics\Type.cs" />
     <Compile Include="Models\PokeAPI\PokemonSpecifics\VersionGroupDetail.cs" />
+    <Compile Include="Models\Tables\Abilities.cs" />
+    <Compile Include="Models\Tables\Forms.cs" />
+    <Compile Include="Models\Tables\GameIndices.cs" />
+    <Compile Include="Models\Tables\HeldItemDetails.cs" />
+    <Compile Include="Models\Tables\HeldItems.cs" />
+    <Compile Include="Models\Tables\Moves.cs" />
+    <Compile Include="Models\Tables\MoveDetails.cs" />
+    <Compile Include="Models\Tables\Pokemon.cs" />
+    <Compile Include="Models\Tables\Sprites.cs" />
+    <Compile Include="Models\Tables\Stats.cs" />
+    <Compile Include="Models\Tables\Types.cs" />
+    <Compile Include="Models\Tables\Version.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Interfaces\IPokeApiRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
@@ -199,6 +223,11 @@
     <Compile Include="Services\Interfaces\IDeserialise.cs" />
     <Compile Include="Services\JsonDeserialise.cs" />
     <Compile Include="ViewModels\PokemonDetails.cs" />
+    <Compile Include="ViewModels\PokemonVM\Basic.cs" />
+    <Compile Include="ViewModels\PokemonVM\BasicWithImage.cs" />
+    <Compile Include="ViewModels\PokemonVM\Detailed.cs" />
+    <Compile Include="ViewModels\PokemonVM\SpeciesBasic.cs" />
+    <Compile Include="ViewModels\PokemonVM\Statistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -210,7 +239,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\PokemonBanner.jpg" />
     <Content Include="Images\PokemonLogo.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -347,6 +375,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Images\Sprites\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -393,7 +422,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
