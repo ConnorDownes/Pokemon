@@ -2,9 +2,16 @@
 
 <style>
     .pokemonBlock {
-        border: 1px solid #333;
-        padding: 10px;
         margin: 5px;
+        text-align: center;
+    }
+
+    .pokemonBlock a {
+        color: inherit;
+    }
+
+    .pokemonBlock:hover a {
+        text-decoration: none;
     }
 </style>
 
@@ -13,16 +20,16 @@
         @foreach (var item in Model)
         {
             <div class="col-md-3 p-0">
-                <a href="@Url.Action("Details", "Pokemon", new { name = item.Name })">
-                    <div class="pokemonBlock bg-@item.Types.Last().type.name">
+                <div class="pokemonBlock bg-@item.Types.Last().type.name">
+                    <a href="@Url.Action("Details", "Pokemon", new { name = item.Name })">
                         <div>
                             <img src="@item.Image" />
                         </div>
-                        <div>
+                        <div style="padding-bottom: 10px;">
                             @Html.DisplayFor(modelItem => item.Name)
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
         }
     </div>

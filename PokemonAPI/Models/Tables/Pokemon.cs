@@ -14,16 +14,18 @@ namespace PokemonAPI.Models.Tables
         public bool IsDefault { get; set; }
         public string LocationEncounters { get; set; }
         public int Order { get; set; }
-        public string Species { get; set; }
         public int Weight { get; set; }
-
-        public List<Sprites> sprites { get; set; }
-        public List<Types> types { get; set; }
-        public List<Stats> stats { get; set; }
-        public List<Moves> moves { get; set; }
-        public List<Forms> forms { get; set; }
-        public List<HeldItems> held_items { get; set; }
-        public List<GameIndices> game_indices { get; set; }
-        public List<Abilities> abilities { get; set; }
+        public int SpeciesID { get; set; }
+        public Species Species { get; set; }
+        public List<Sprites> Sprites { get; set; }
+        public List<Types> Types { get; set; }
+        public List<Stats> Stats { get; set; }
+        public List<Moves> Moves { get; set; }
+        public List<Forms> Forms { get; set; }
+        public List<HeldItems> HeldItems { get; set; }
+        public List<GameIndices> GameIndices { get; set; }
+        public List<Abilities> Abilities { get; set; }
+        public List<Pokemon> EvolvesTo { get; set; }
+        public Pokemon EvolvesFrom { get; set; }
     }
 }

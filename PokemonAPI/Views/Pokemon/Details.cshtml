@@ -24,7 +24,7 @@
 
 @if (Model != null)
 {
-    <div style="padding: 5px; background-color: #f1f0cc; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom">
+    <div style="padding: 5px; padding: 25px; position: relative;" class="noMargin text-center boxShadowBottom bg-@Model.Pokemon.Types.Last().type.name">
         <div class="container">
             <h2>
                 @Model.Pokemon.Name <span class="font-italic">@($"#{Model.Pokemon.Id}")</span>
@@ -55,14 +55,14 @@
                     if (counter < Model.PokemonEvolutionChain.Count() - 1)
                     {
                         <div class="col-sm-auto d-flex align-items-center justify-content-center">
-                            <i class="fas EvolutionArrow" style="padding: 15px;"></i>
+                            <i class="fas EvolutionArrow" style="padding: 15px 0px;"></i>
                         </div>
                     }
                 }
             </div>
         </div>
     </div>
-    <div style="background-color: coral; text-align: center; padding: 15px; padding-bottom: 0px;">
+    <div style="text-align: center; padding: 15px; padding-bottom: 0px;" class="bg-@Model.Pokemon.Types.Last().type.name">
         <div class="container d-flex justify-content-center">
             <div style="max-width: 400px; width: 100%; background-color: white;">
                 <div class="d-iblock br-3">

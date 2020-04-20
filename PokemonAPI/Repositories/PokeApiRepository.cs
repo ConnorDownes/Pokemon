@@ -14,6 +14,7 @@ namespace PokemonAPI.Repositories
     [OutputCache(Duration = 86400)]
     public class PokeApiRepository : IPokeApiRepository
     {
+        private readonly string BaseURL = "https://pokeapi.co/api/v2";
         private readonly IApiService _apiClient;
         private readonly IDeserialise _deserialiser;
         public PokeApiRepository(IApiService apiClient, IFactory deserialiserFactory)
@@ -24,7 +25,7 @@ namespace PokemonAPI.Repositories
 
         public async Task<PokemonBasic> GetAllPokemonAsync(int limit = 20, int offset = 0)
         {
-            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}");
+            var Response = await _apiClient.CallApiAsync($"{BaseURL}/pokemon?limit={limit}&offset={offset}");
 
             var Pokemon = _deserialiser.Deserialise<PokemonBasic>(Response);
 
@@ -33,7 +34,7 @@ namespace PokemonAPI.Repositories
 
         public async Task<Pokemon> GetSinglePokemonAsync(int id)
         {
-            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon/{id}");
+            var Response = await _apiClient.CallApiAsync($"{BaseURL}/pokemon/{id}");
 
             var Pokemon = _deserialiser.Deserialise<Pokemon>(Response);
 
@@ -42,7 +43,7 @@ namespace PokemonAPI.Repositories
 
         public async Task<Pokemon> GetSinglePokemonAsync(string name)
         {
-            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon/{name}");
+            var Response = await _apiClient.CallApiAsync($"{BaseURL}/pokemon/{name}");
 
             var Pokemon = _deserialiser.Deserialise<Pokemon>(Response);
 
@@ -51,7 +52,7 @@ namespace PokemonAPI.Repositories
 
         public async Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(int id)
         {
-            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon-species/{id}");
+            var Response = await _apiClient.CallApiAsync($"{BaseURL}/pokemon-species/{id}");
 
             var Species = _deserialiser.Deserialise<pokemonSpecies>(Response);
 
@@ -60,7 +61,7 @@ namespace PokemonAPI.Repositories
 
         public async Task<pokemonSpecies> GetSinglePokemonSpeciesAsync(string name)
         {
-            var Response = await _apiClient.CallApiAsync($"https://pokeapi.co/api/v2/pokemon-species/{name}");
+            var Response = await _apiClient.CallApiAsync($"{BaseURL}/pokemon-species/{name}");
 
             var Species = _deserialiser.Deserialise<pokemonSpecies>(Response);
 
