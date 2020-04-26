@@ -5,9 +5,9 @@ using System.Web;
 
 namespace PokemonAPI.Models.Tables
 {
-    public class Colours
+    public class GrowthRate
     {
         public int ID { get; set; }
-        public string Name { get; set; }
+        public string GrowthRateName { get; set; }
     }
 }

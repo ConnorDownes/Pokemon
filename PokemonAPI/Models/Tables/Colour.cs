@@ -5,10 +5,9 @@ using System.Web;
 
 namespace PokemonAPI.Models.Tables
 {
-    public class Types
+    public class Colour
     {
         public int ID { get; set; }
-        public int Slot { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; }
     }
 }

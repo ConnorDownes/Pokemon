@@ -5,9 +5,10 @@ using System.Web;
 
 namespace PokemonAPI.Models.Tables
 {
-    public class GrowthRates
+    public class Type
     {
         public int ID { get; set; }
-        public string GrowthRateName { get; set; }
+        public int Slot { get; set; }
+        public string TypeName { get; set; }
     }
 }

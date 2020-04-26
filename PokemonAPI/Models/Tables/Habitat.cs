@@ -5,9 +5,9 @@ using System.Web;
 
 namespace PokemonAPI.Models.Tables
 {
-    public class Languages
+    public class Habitat
     {
         public int ID { get; set; }
-        public string Name { get; set; }
+        public string HabitatName { get; set; }
     }
 }

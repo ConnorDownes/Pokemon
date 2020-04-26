@@ -5,11 +5,11 @@ using System.Web;
 
 namespace PokemonAPI.Models.Tables
 {
-    public class Moves
+    public class Move
     {
         public int ID { get; set; }
-        public string Move { get; set; }
+        public string MoveName { get; set; }
 
-        public List<MoveDetails> MoveDetails { get; set; }
+        public List<MoveDetail> MoveDetails { get; set; }
     }
 }

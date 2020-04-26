@@ -15,11 +15,14 @@ namespace PokemonAPI.Models.Tables
         public int HatchStepCounter { get; set; }
         public bool IsBaby { get; set; }
         public int ColourID { get; set; }
-        public Colours Colour { get; set; }
-        public List<EggGroups> EggGroups { get; set; }
-        public List<FlavorTextEntries> FlavorTextEntries { get; set; }
-        public Generations IntroducedIn { get; set; }
-        public GrowthRates GrowthRate { get; set; }
-        public Habitats Habitat { get; set; }
+        public int GenerationIntroducedID { get; set; }
+        public int GrowthRateID { get; set; }
+        public int HabitatID { get; set; }
+        public virtual Colour Colour { get; set; }
+        public virtual ICollection<EggGroup> EggGroups { get; set; }
+        public virtual ICollection<FlavorTextEntry> FlavorTextEntries { get; set; }
+        public virtual Generation GenerationIntroduced { get; set; }
+        public virtual GrowthRate GrowthRate { get; set; }
+        public virtual Habitat Habitat { get; set; }
     }
 }

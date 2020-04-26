@@ -2,12 +2,13 @@ using AutoMapper;
 using PokemonAPI.App_Start.MappingConfigurations;
 using PokemonAPI.Factories;
 using PokemonAPI.Factories.Interfaces;
+using PokemonAPI.Models.DAL;
 using PokemonAPI.Repositories;
 using PokemonAPI.Repositories.Interfaces;
 using PokemonAPI.Services;
 using PokemonAPI.Services.Interfaces;
 using System;
-
+using System.Data.Entity;
 using Unity;
 
 namespace PokemonAPI
@@ -57,6 +58,7 @@ namespace PokemonAPI
             container.RegisterType<IFactory, DeserialiserFactory>();
             container.RegisterType<IApiService, HTTPClientService>();
             container.RegisterType<IPokeApiRepository, PokeApiRepository>();
+            container.RegisterType<DbContext, PokemonContext>();
             container.RegisterInstance(mapper);
         }
     }
